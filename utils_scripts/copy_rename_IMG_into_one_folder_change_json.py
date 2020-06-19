@@ -9,35 +9,26 @@ import ntpath
 import shutil
 import numpy as np
 import json
-#%%
-mask = np.load('C:\\Users\\sven\\Desktop\\masks.npy')
-#an_array = np.load('C:\\Users\\sven\\Desktop\\an_array.npy',allow_pickle=True)
-#%%
-i, j, k = np.where(mask == True)
-true
-#%%
-mask_true = [i, j, k]
-#%%
-a = mask[179,347]
-
-        
 #%% change rotedir and path_dst_folder
 ##check if folder dataset_9091 mit IMG in Subordner 
 rootdir = 'E:\Datasets_GGU_Bodenproben_orig\Bodenproben_recognition\dataset\dataset_8205_1\8205_1'
-#load json file
-#f = open('E:\\Datasets_GGU_Bodenproben_orig\\Bodenproben_recognition\\dataset\\dataset_9091\\all_img\\train_0247_5205\\recognice_sample_train_5205.json',)
-f = open('E:\\Datasets_GGU_Bodenproben_orig\\Bodenproben_recognition\\dataset\\dataset_9091\\all_img\\val_5206_5272\\recognice_sample_val_5206_5272.json',)
 
 # set True to change and False do nothing
 copy_img_into_one_folder = True #True#False
 path_dst_folder = 'E:\\Datasets_GGU_Bodenproben_orig\\Bodenproben_recognition\\dataset\\dataset_8205_1\\all_img'
 
 change_json = False #True #False
-#json_train or json_val in new folder allimg
-#path_json_edit = 'E:\\Datasets_GGU_Bodenproben_orig\\Bodenproben_recognition\\dataset\\dataset_9091\\all_img2\\train_0247_5205\\recognice_sample_train_5205_edit.json'
-path_json_edit = 'E:\\Datasets_GGU_Bodenproben_orig\\Bodenproben_recognition\\dataset\\dataset_9091\\all_img2\\val_5206_5272\\recognice_sample_val_5206_5272_edit.json'
 
-data = json.load(f)
+if change_json == True: 
+    #load json file
+    #f = open('E:\\Datasets_GGU_Bodenproben_orig\\Bodenproben_recognition\\dataset\\dataset_9091\\all_img\\train_0247_5205\\recognice_sample_train_5205.json',)
+    f = open('E:\\Datasets_GGU_Bodenproben_orig\\Bodenproben_recognition\\dataset\\dataset_9091\\all_img\\val_5206_5272\\recognice_sample_val_5206_5272.json',)
+    
+    #json_train or json_val in new folder allimg
+    #path_json_edit = 'E:\\Datasets_GGU_Bodenproben_orig\\Bodenproben_recognition\\dataset\\dataset_9091\\all_img2\\train_0247_5205\\recognice_sample_train_5205_edit.json'
+    path_json_edit = 'E:\\Datasets_GGU_Bodenproben_orig\\Bodenproben_recognition\\dataset\\dataset_9091\\all_img2\\val_5206_5272\\recognice_sample_val_5206_5272_edit.json'
+    
+    data = json.load(f)
 #%%
 number_img = 0
 number_matches_json_allimg = 0
@@ -72,24 +63,24 @@ for subdir, dirs, files in os.walk(rootdir):
             if copy_img_into_one_folder == True:
                 shutil.copyfile(src,dst) 
                 
-                
-            basename_img_file =  os.path.basename(split_path_file_img_and_extension[0])
-# change img names in json file
-            data_keys_json = list(data.keys())#['IMG_0332.JPG1076716']
-#            basename_img_file_all.append(basename_img_file)
-            for s in data_keys_json:
-                if basename_img_file in s:
-                    matching = s
-#find IMG name and replace with basename
-                    if data [matching]['filename'] == file:
-                        data [matching]['filename'] = basename
-                        number_matches_json_allimg =number_matches_json_allimg+1                 
-                    #chang data_keys of json file 
-                    split_data_keys_json = os.path.splitext(matching)
-                    #add and join
-                    data_keys_json_new = split_data_keys_json[0]+get_name_from_copied_folder+split_data_keys_json[1]
-#                    d['test2'] = d.pop('test')
-                    data[data_keys_json_new]=data.pop(matching)                   
+            if change_json == True:     
+                basename_img_file =  os.path.basename(split_path_file_img_and_extension[0])
+    # change img names in json file
+                data_keys_json = list(data.keys())#['IMG_0332.JPG1076716']
+    #            basename_img_file_all.append(basename_img_file)
+                for s in data_keys_json:
+                    if basename_img_file in s:
+                        matching = s
+    #find IMG name and replace with basename
+                        if data [matching]['filename'] == file:
+                            data [matching]['filename'] = basename
+                            number_matches_json_allimg =number_matches_json_allimg+1                 
+                        #chang data_keys of json file 
+                        split_data_keys_json = os.path.splitext(matching)
+                        #add and join
+                        data_keys_json_new = split_data_keys_json[0]+get_name_from_copied_folder+split_data_keys_json[1]
+    #                    d['test2'] = d.pop('test')
+                        data[data_keys_json_new]=data.pop(matching)                   
             else:
                 no_match = no_match + 1
                 print('no match in json')
