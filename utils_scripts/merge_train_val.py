@@ -14,16 +14,16 @@ import json
 import os
 # add the filename of all VIA2 projects
 # Note: all VIA projects should have same attributes and project settings
-path_1 = r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\project_9091\all_img_and_json'
-filename_1 = 'via_project_merged.json'
+path_1 = r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\project_8205_1\prepare_test_for_new_train_02\till_0106'
+filename_1 = 'edit_till_0106.json'
 pat_filename_1 = os.path.join(path_1,filename_1)
 
-path_2 = r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\project_8205_1\new_train\till_IMG_0080'
-filename_2 = 'result_masks(28)_8205_1_edit_till_29_IMG_0080.json'
+path_2 = r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\new_train_01\all_img_train_val_and_json'
+filename_2 = 'via_project_merged.json'
 pat_filename_2 = os.path.join(path_2,filename_2)
 
 filename_list = [pat_filename_1, pat_filename_2]
-path_output= r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\new_train'
+path_output= r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\new_train_02'
 filename_output = ' via_project_merged.json'
 output_filename = os.path.join(path_output,filename_output)
 

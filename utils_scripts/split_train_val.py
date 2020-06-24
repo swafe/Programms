@@ -20,12 +20,12 @@ import os
 #change here!!
 copy_img = True
 copy_json = True
-train_prop = 0.6 # todo [0:73]
+train_prop = 0.75 # todo [0:73]
 #%%
 # add the filename of all VIA2 projects
 # Note: all VIA projects should have same attributes and project settings
-root_project_path =r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\project_9091'
-all_img_json_folder = 'all_img_and_json'
+root_project_path =r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\new_train_02'
+all_img_json_folder = 'all_img_train_val_and_json'
 # load json of all images
 filename = os.path.join(root_project_path,all_img_json_folder,'via_project_merged.json')
 # copy attributes and other project settings from one of the projects
