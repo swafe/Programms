@@ -11,11 +11,21 @@ from: https://gitlab.com/vgg/via/-/blob/master/via-2.x.y/scripts/io/merge_via2_p
 # Date: 18 May 2020
 
 import json
-
+import os
 # add the filename of all VIA2 projects
 # Note: all VIA projects should have same attributes and project settings
-filename_list = [r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\project_9091\all_img_and_json\recognice_sample_train_5205_horiz.json', r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\project_9091\all_img_and_json\recognice_sample_val_5206_5272_horiz.json']
-output_filename = r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\project_9091\all_img_and_json\via_project_merged.json'
+path_1 = r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\project_9091\all_img_and_json'
+filename_1 = 'via_project_merged.json'
+pat_filename_1 = os.path.join(path_1,filename_1)
+
+path_2 = r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\project_8205_1\new_train\till_IMG_0080'
+filename_2 = 'result_masks(28)_8205_1_edit_till_29_IMG_0080.json'
+pat_filename_2 = os.path.join(path_2,filename_2)
+
+filename_list = [pat_filename_1, pat_filename_2]
+path_output= r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\new_train'
+filename_output = ' via_project_merged.json'
+output_filename = os.path.join(path_output,filename_output)
 
 # copy attributes and other project settings from one of the projects
 # assumption: all the projects have same attributes and settings
