@@ -15,6 +15,7 @@ rootdir = 'E:\Datasets_GGU_Bodenproben_orig\Bodenproben_recognition\dataset\data
 
 # set True to change and False do nothing
 copy_img_into_one_folder = True #True#False
+
 path_dst_folder = 'E:\\Datasets_GGU_Bodenproben_orig\\Bodenproben_recognition\\dataset\\dataset_8205_1\\all_img'
 
 change_json = False #True #False
