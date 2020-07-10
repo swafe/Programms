@@ -243,6 +243,7 @@ if google_drive:
     drive.mount('/content/drive')
 
 #%%
+path_snip_ohne_sign_all = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign_all'
 path_snip_ohne_sign = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign'#'/content/drive/My Drive/Colab/snipped'
 path_snip_sign = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_sign'
 #os.mkdir(path_snip)
@@ -256,48 +257,88 @@ path_snip_sign = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_i
 
 # read image as RGB and add alpha (transparency)
 
-for path_i in image_paths[0:4]:
+for path_i in image_paths:
   im = Image.open(path_i).convert("RGBA")
   # convert to numpy (for convenience)
   imArray = np.asarray(im)
   # create mask
   detected, filename_and_size, filename_jpg, sample_id, countsample, countsigns = get_points_label_from_json_as_array(data_sorted, path_i)
   print(countsample, countsigns)
-  
-  for i_sample in range(countsample):
-      
-      polygon = detected[i_sample]
-      sample_id_i = sample_id[i_sample][1]
-      #print(polygon)
-      maskIm = Image.new('L', (imArray.shape[1], imArray.shape[0]), 0)
-      ImageDraw.Draw(maskIm).polygon(polygon, outline=1, fill=1)
-      mask = np.array(maskIm)
-      # assemble new image (uint8: 0-255)
-      newImArray = np.empty(imArray.shape,dtype='uint8')   
-      #colors (three first columns, RGB)
-      newImArray[:,:,:3] = imArray[:,:,:3]  
-      #transparency (4th column)
-      newImArray[:,:,3] = mask*255
-      #back to Image from numpy
-      newIm = Image.fromarray(newImArray, "RGBA")
-      #save snipped image with name of originimage plus index
-      filename = os.path.splitext(filename_jpg)
-      if True: # True False
-          path = path_snip_ohne_sign #'/content/drive/My Drive/Colab/snipped' #'/content/snipped_img'
-          if not os.path.exists(path):
-              os.makedirs(path)
-          newIm.save("%s/%s_%s.png"%(path,filename[0],sample_id_i))
-          print(filename[0],sample_id_i)
+  if True:
+      for i_sample in range(countsample):
+          
+          polygon = detected[i_sample]
+          sample_id_i = sample_id[i_sample][1]
+          #print(polygon)
+          maskIm = Image.new('L', (imArray.shape[1], imArray.shape[0]), 0)
+          ImageDraw.Draw(maskIm).polygon(polygon, outline=1, fill=1)
+          mask = np.array(maskIm)
+          # assemble new image (uint8: 0-255)
+          newImArray = np.empty(imArray.shape,dtype='uint8')   
+          #colors (three first columns, RGB)
+          newImArray[:,:,:3] = imArray[:,:,:3]  
+          #transparency (4th column)
+          newImArray[:,:,3] = mask*255
+          #back to Image from numpy
+          newIm = Image.fromarray(newImArray, "RGBA")
+          #save snipped image with name of originimage plus index
+          filename = os.path.splitext(filename_jpg)
+          if True: # True False
+              path = path_snip_ohne_sign_all #'/content/drive/My Drive/Colab/snipped' #'/content/snipped_img'
+              if not os.path.exists(path):
+                  os.makedirs(path)
+              newIm.save("%s/%s_%s.png"%(path,filename[0],sample_id_i))
+              print(filename[0],sample_id_i)
+#%%
+            
+#%%  
+for path_i in image_paths:
+  im = Image.open(path_i).convert("RGBA")
+  # convert to numpy (for convenience)
+  imArray = np.asarray(im)
+  # create mask
+  detected, filename_and_size, filename_jpg, sample_id, countsample, countsigns = get_points_label_from_json_as_array(data_sorted, path_i)
+  print(countsample, countsigns)
   if countsample != countsigns:
-      sample_id_i = sample_id[i_sample]
       print(filename_jpg)
       filename_countsample_no_countsigns = filename_jpg
+      for i_sample in range(countsample):
+          polygon = detected[i_sample]
+          polygon_sign = []
+          for i in range(countsample, countsample + countsigns):
+                         polygon_sign_i = detected[i] 
+                         polygon_sign.append(polygon_sign_i)
+          sample_id_i = sample_id[i_sample][1]
+          #print(polygon)
+          
+          maskIm = Image.new('L', (imArray.shape[1], imArray.shape[0]), 0)
+          ImageDraw.Draw(maskIm).polygon(polygon, outline=1, fill=1)
+          for countsigns_i in range(0,countsigns):
+              ImageDraw.Draw(maskIm).polygon(polygon_sign[countsigns_i], outline=1, fill=1)
+          mask = np.array(maskIm)
+          #assemble new image (uint8: 0-255)
+          newImArray = np.empty(imArray.shape,dtype='uint8')
+          #colors (three first columns, RGB)
+          newImArray[:,:,:3] = imArray[:,:,:3]
+          #transparency (4th column)
+          newImArray[:,:,3] = mask*255
+          #back to Image from numpy
+          newIm = Image.fromarray(newImArray, "RGBA")
+          #save snipped image with name of originimage plus index
+          filename = os.path.splitext(filename_jpg)
+          if True: # True False
+              path = path_snip_sign #'/content/drive/My Drive/Colab/snipped' #'/content/snipped_img'
+              if not os.path.exists(path):
+                  os.makedirs(path)
+              newIm.save("%s/%s_%s.png"%(path,filename[0],sample_id_i))
+              print(filename[0],sample_id_i)
   elif countsample == countsigns:
       for i_sample in range(countsample):
           polygon = detected[i_sample]
           polygon_sign =detected[countsample + i_sample] 
-          sample_id_i = sample_id[i_sample]
+          sample_id_i = sample_id[i_sample][1]
           #print(polygon)
+          
           maskIm = Image.new('L', (imArray.shape[1], imArray.shape[0]), 0)
           ImageDraw.Draw(maskIm).polygon(polygon, outline=1, fill=1)
           ImageDraw.Draw(maskIm).polygon(polygon_sign, outline=1, fill=1)
@@ -317,6 +358,25 @@ for path_i in image_paths[0:4]:
               if not os.path.exists(path):
                   os.makedirs(path)
               newIm.save("%s/%s_%s.png"%(path,filename[0],sample_id_i))
+              print(filename[0],sample_id_i)
+          maskIm_sample = Image.new('L', (imArray.shape[1], imArray.shape[0]), 0)
+          ImageDraw.Draw(maskIm_sample).polygon(polygon, outline=1, fill=1)
+          mask_sample = np.array(maskIm_sample)
+          #assemble new image (uint8: 0-255)
+          newImArray_sample = np.empty(imArray.shape,dtype='uint8')
+          #colors (three first columns, RGB)
+          newImArray_sample[:,:,:3] = imArray[:,:,:3]
+          #transparency (4th column)
+          newImArray_sample[:,:,3] = mask_sample*255
+          #back to Image from numpy
+          newIm_sample = Image.fromarray(newImArray_sample, "RGBA")
+          #save snipped image with name of originimage plus index
+          filename = os.path.splitext(filename_jpg)
+          if True: # True False
+              path = path_snip_ohne_sign #'/content/drive/My Drive/Colab/snipped' #'/content/snipped_img'
+              if not os.path.exists(path):
+                  os.makedirs(path)
+              newIm_sample.save("%s/%s_%s.png"%(path,filename[0],sample_id_i))
               print(filename[0],sample_id_i)
                   
 #  #save snipped images in folder strukture, where snipped images are stored in folder named as origin image
