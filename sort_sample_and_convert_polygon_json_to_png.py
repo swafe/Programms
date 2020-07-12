@@ -81,7 +81,7 @@ def get_points_label_from_json_as_array(data, image_path):
 # change here !!!!!!
 path_test_in_data = r'vgg_annotation/img_horizontal/project_9091/all_img_train_val_and_json'
 path_test_dir = os.path.join(path_data,path_test_in_data)
-json_name = 'regions_and sign.json'  #'via_project_merged.json'
+json_name = 'regions_and sign2.json'  #'via_project_merged.json'
 json_file_dir = os.path.join(path_test_dir, json_name) 
 
 #get all images in path_test_dir
@@ -244,7 +244,7 @@ if google_drive:
 
 #%%
 path_snip_ohne_sign_all = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign_all'
-path_snip_ohne_sign = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign'#'/content/drive/My Drive/Colab/snipped'
+#path_snip_ohne_sign = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign'#'/content/drive/My Drive/Colab/snipped'
 path_snip_sign = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_sign'
 #os.mkdir(path_snip)
 
@@ -257,6 +257,7 @@ path_snip_sign = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_i
 
 # read image as RGB and add alpha (transparency)
 
+### path_snip_ohne_sign_all for later classification, use change_json_key.py to edit key names
 for path_i in image_paths:
   im = Image.open(path_i).convert("RGBA")
   # convert to numpy (for convenience)
@@ -289,9 +290,9 @@ for path_i in image_paths:
                   os.makedirs(path)
               newIm.save("%s/%s_%s.png"%(path,filename[0],sample_id_i))
               print(filename[0],sample_id_i)
-#%%
             
 #%%  
+#### path_snip_sign, devide into countsample != countsigns(shows all signs) and countsample == countsigns (shows only related sign)
 for path_i in image_paths:
   im = Image.open(path_i).convert("RGBA")
   # convert to numpy (for convenience)
@@ -359,25 +360,35 @@ for path_i in image_paths:
                   os.makedirs(path)
               newIm.save("%s/%s_%s.png"%(path,filename[0],sample_id_i))
               print(filename[0],sample_id_i)
-          maskIm_sample = Image.new('L', (imArray.shape[1], imArray.shape[0]), 0)
-          ImageDraw.Draw(maskIm_sample).polygon(polygon, outline=1, fill=1)
-          mask_sample = np.array(maskIm_sample)
-          #assemble new image (uint8: 0-255)
-          newImArray_sample = np.empty(imArray.shape,dtype='uint8')
-          #colors (three first columns, RGB)
-          newImArray_sample[:,:,:3] = imArray[:,:,:3]
-          #transparency (4th column)
-          newImArray_sample[:,:,3] = mask_sample*255
-          #back to Image from numpy
-          newIm_sample = Image.fromarray(newImArray_sample, "RGBA")
-          #save snipped image with name of originimage plus index
-          filename = os.path.splitext(filename_jpg)
-          if True: # True False
-              path = path_snip_ohne_sign #'/content/drive/My Drive/Colab/snipped' #'/content/snipped_img'
-              if not os.path.exists(path):
-                  os.makedirs(path)
-              newIm_sample.save("%s/%s_%s.png"%(path,filename[0],sample_id_i))
-              print(filename[0],sample_id_i)
+  
+    
+    
+    
+    
+    
+    
+    
+    
+# eigentlich nicht erforderlich       
+#          maskIm_sample = Image.new('L', (imArray.shape[1], imArray.shape[0]), 0)
+#          ImageDraw.Draw(maskIm_sample).polygon(polygon, outline=1, fill=1)
+#          mask_sample = np.array(maskIm_sample)
+#          #assemble new image (uint8: 0-255)
+#          newImArray_sample = np.empty(imArray.shape,dtype='uint8')
+#          #colors (three first columns, RGB)
+#          newImArray_sample[:,:,:3] = imArray[:,:,:3]
+#          #transparency (4th column)
+#          newImArray_sample[:,:,3] = mask_sample*255
+#          #back to Image from numpy
+#          newIm_sample = Image.fromarray(newImArray_sample, "RGBA")
+#          #save snipped image with name of originimage plus index
+#          filename = os.path.splitext(filename_jpg)
+#          if True: # True False
+#              path = path_snip_ohne_sign #'/content/drive/My Drive/Colab/snipped' #'/content/snipped_img'
+#              if not os.path.exists(path):
+#                  os.makedirs(path)
+#              newIm_sample.save("%s/%s_%s.png"%(path,filename[0],sample_id_i))
+#              print(filename[0],sample_id_i)
                   
 #  #save snipped images in folder strukture, where snipped images are stored in folder named as origin image
 #  if False: # True False

@@ -25,8 +25,8 @@ def get_access_to_json(image_path):
 
 # Python program to read json file 
 # change here !!!!!!
-path_data = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_sign'
-json_name = 'via_project_9Jul2020_20h58m_json.json'  #'via_project_merged.json'
+path_data = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\Soil_Classification\dataset_train_till_IMG_5203BKF 38_4'
+json_name = 'via_project_10Jul2020_12h16m_json(14).json'  #'via_project_merged.json'
 json_file_dir = os.path.join(path_data, json_name)     
      
 # Opening JSON file 
@@ -37,7 +37,7 @@ data_01 = json.load(f)
 f.close()   
     
 #%%
-new_json_path = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign_all'
+new_json_path = path_data # r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign_all'
 json_name_regions_and_sign = 'changed_json.json'
 json_file_dir_region_and_sign = os.path.join(new_json_path, json_name_regions_and_sign) 
 
