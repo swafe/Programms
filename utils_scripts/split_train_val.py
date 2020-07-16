@@ -18,16 +18,16 @@ import os
 
 #%%
 #change here!!
-copy_img = True
+copy_img = False #True
 copy_json = True
 train_prop = 0.75 # todo [0:73]
 #%%
 # add the filename of all VIA2 projects
 # Note: all VIA projects should have same attributes and project settings
-root_project_path =r'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\new_train_02'
-all_img_json_folder = 'all_img_train_val_and_json'
+root_project_path =r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\Soil_Classification' #'C:\Users\sven\Desktop\Masterthesis\github\data\vgg_annotation\img_horizontal\new_train_02'
+all_img_json_folder = 'dataset_train_till_IMG_5203BKF 38_4' #'all_img_train_val_and_json'
 # load json of all images
-filename = os.path.join(root_project_path,all_img_json_folder,'via_project_merged.json')
+filename = os.path.join(root_project_path,all_img_json_folder,'changed_json_soiltype_id.json') #via_project_merged.json')
 # copy attributes and other project settings from one of the projects
 # assumption: all the projects have same attributes and settings
 via2 = {}

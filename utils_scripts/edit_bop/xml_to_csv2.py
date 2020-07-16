@@ -75,7 +75,7 @@ with open(path_xml_csv_extension, "w", newline="") as f:
 #                    writer.writerow(fieldnames_1)
                 writer.writerow([basename_path_file_csv])
                 writer.writerows(Layer_depths_and_info_list)
- 
+#%% 
     # create csv with filtered soiltypes step 1
 Layer_infos = []   
 with open(path_Soiltypes_xml_csv_extension, "w", newline="") as f_stypes:         

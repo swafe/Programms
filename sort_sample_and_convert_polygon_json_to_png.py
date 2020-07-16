@@ -251,15 +251,19 @@ path_snip_sign = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_i
 
 #%%
 #  MAIN
+
 #%%
 # cutting detected images 
 # https://stackoverflow.com/questions/22588074/polygon-crop-clip-using-python-pil
 
 # read image as RGB and add alpha (transparency)
+#I added a section in the wiki about training with images of different channel size (e.g. Graysclae or RGBD). If I missed something, please let me know.
+#https://github.com/matterport/Mask_RCNN/wiki
 
 ### path_snip_ohne_sign_all for later classification, use change_json_key.py to edit key names
 for path_i in image_paths:
   im = Image.open(path_i).convert("RGBA")
+  im = Image.open(path_i).convert("RGB") #"RGBA"
   # convert to numpy (for convenience)
   imArray = np.asarray(im)
   # create mask
@@ -279,9 +283,10 @@ for path_i in image_paths:
           #colors (three first columns, RGB)
           newImArray[:,:,:3] = imArray[:,:,:3]  
           #transparency (4th column)
-          newImArray[:,:,3] = mask*255
+#          newImArray[:,:,3] = mask*255
           #back to Image from numpy
-          newIm = Image.fromarray(newImArray, "RGBA")
+#          newIm = Image.fromarray(newImArray, "RGBA")  
+          newIm = Image.fromarray(newImArray, "RGB")  #'RGBA'
           #save snipped image with name of originimage plus index
           filename = os.path.splitext(filename_jpg)
           if True: # True False
@@ -405,8 +410,44 @@ for path_i in image_paths:
 #          os.makedirs(path)
 #          newIm.save("%s/%s_%s.png"%(path,filename[0],sample_id_i))
 #      print(filename[0],sample_id_i)
-#      
+#
+              
+              
+              
+              
+              
+              
+              
+              
+              
+    #%% convert RGBA to RGB 
+#https://stackoverflow.com/questions/9166400/convert-rgba-png-to-rgb-with-pil/9459208
+from PIL import Image
+import os 
+import numpy as np
+img_RGBA_folder_path = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\Soil_Classification\val01'
+img_RGB_folder_path = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\Soil_Classification\val01\RGB'
+if not os.path.exists(img_RGB_folder_path):
+    os.mkdir(img_RGB_folder_path)
+image_paths = []
+for filename in sorted(os.listdir(img_RGBA_folder_path), key=str.lower):
+    if os.path.splitext(filename)[1].lower() in ['.png', '.jpg', '.jpeg']:
+      image_paths.append(os.path.join(img_RGBA_folder_path, filename))
       
+for path_i in image_paths:
+    png = Image.open(path_i)
+    print(np.shape(png))
+    png.load() # required for png.split()
+    
+    background = Image.new("RGB", png.size, (255, 255, 255))
+    background.paste(png, mask=png.split()[3]) # 3 is the alpha channel
+    print(np.shape(background))
+    img_filename = os.path.basename(path_i)
+  
+    image_save_path = os.path.join(img_RGB_folder_path,img_filename)  
+    background.save(image_save_path, 'PNG') #, quality=80)
+print('süper')
+  
       
       
       
