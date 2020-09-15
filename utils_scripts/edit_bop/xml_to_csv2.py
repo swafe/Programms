@@ -28,12 +28,13 @@ def convert_xml_to_List(xml_doc):
     return Layer_depths_and_info_list
 #%%
 ## change paths
-rootdir = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\9091\bop_xml_csv\Anlagen 2 bopo' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\8205_1\xml_to_csv\bop'
-
-dst_folder_csv = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\9091\bop_xml_csv' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\8205_1\xml_to_csv'
-path_xml_csv_extension = os.path.join(dst_folder_csv,'xml_to_csv_9091.csv')
-path_Soiltypes_xml_csv_extension = os.path.join(dst_folder_csv,'Soiltypes_xml_to_csv_9091.csv')
+rootdir = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\9091\bop_xml_csv\Anlagen 2 bopo' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\9091\bop_xml_csv\Anlagen 2 bopo' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\8205_1\xml_to_csv\bop'
+#%%
+dst_folder_csv = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\9091\bop_xml_csv' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\8205_1\xml_to_csv' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\9091\bop_xml_csv' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\8205_1\xml_to_csv'
+path_xml_csv_extension = os.path.join(dst_folder_csv,'xml_to_csv_9091.csv') #'xml_to_csv_8205_1.csv') #'xml_to_csv_9091.csv')
+path_Soiltypes_xml_csv_extension = os.path.join(dst_folder_csv,'Soiltypes_xml_to_csv_9091_2.csv') #'Soiltypes_xml_to_csv_8205_1.csv') #'Soiltypes_xml_to_csv_9091.csv')
 number_xml = 0
+#%% create overview of layers for all boreholes as xml_to_csv_8205_1.csv
 with open(path_xml_csv_extension, "w", newline="") as f:
     if True: #True False 
         fieldnames_1=['basename_path_file_csv, Layer_depths_and_info_list']
@@ -83,13 +84,13 @@ with open(path_Soiltypes_xml_csv_extension, "w", newline="") as f_stypes:
     for subdir, dirs, files_unsorted in os.walk(rootdir):
 
         for file in files_unsorted:
-            number_xml = number_xml + 1
             path_file_xml = os.path.join(subdir,file)
             split_path_file_img_and_extension = os.path.splitext(path_file_xml)
             if (split_path_file_img_and_extension[1] == '.xml'):
+                number_xml = number_xml + 1
                 xml_doc = minidom.parse(path_file_xml)
                 Layer_depths_and_info_list = convert_xml_to_List(xml_doc)
-                print(basename_path_file_csv)
+#                print(basename_path_file_csv)
                 Layer_infos.append(Layer_depths_and_info_list[1])
 # create csv with filtered soiltypes step 2               
 words_Soiltypes = []
@@ -101,7 +102,7 @@ for i in Layer_infos:
 count_words_soiltype = Counter(words_Soiltypes)
 with open(path_Soiltypes_xml_csv_extension, "w", newline="") as f_stypes: 
     if True: #True False 
-        fieldnames=['Soiltype','counter']
+        fieldnames=['Soiltype','Verteilung der Proben']
         writer = csv.writer(f_stypes)
         writer.writerow(fieldnames)
         for key, value in count_words_soiltype.items():

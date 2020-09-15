@@ -12,6 +12,7 @@ import os
 
 import numpy as np
 import json 
+import csv
 
 from PIL import Image, ImageDraw
 #%%
@@ -25,9 +26,9 @@ def get_access_to_json(image_path):
 
 # Python program to read json file 
 # change here !!!!!!
-path_data = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\Soil_Classification\train01\RGB' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\Soil_Classification\dataset_train_till_IMG_5203BKF 38_4'
+path_data = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\phase_1\dataset\dataset_8205_1\snipped_sign' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\phase_1\dataset\dataset_8205_1\snipped_ohne_sign'#'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\phase_1\dataset\dataset_8205_1\all_img' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\phase_2\snipped_img\snipped_ohne_sign_all\RGB' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\phase_2\snipped_img\snipped_sign' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\Soil_Classification\dataset_train_till_IMG_5203BKF 38_4\RGB' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\Soil_Classification\dataset_train_till_IMG_5203BKF 38_4'
 #json_name = 'via_project_10Jul2020_12h16m_json(15).json'  #'via_project_merged.json'
-json_name = 'changed_json.json' #'via_val02.json'
+json_name = 'changed_json_Plastik.json'#'via_project_4Sep2020_18h28m_json(2).json' #'result_masks(35).json' #'via_train_Feinsand.json' #'rgb_regions_train_val_test.json' #'via_project_5Aug2020_23h19m_json(3)_regions_and_sign.json' #'changed_json_Auffuellung.json' #'changed_json_soiltype_id.json' #'via_val02.json'
 json_file_dir = os.path.join(path_data, json_name)     
      
 
@@ -39,11 +40,11 @@ data_01 = json.load(f)
 f.close()   
     
 #%%
-new_json_path = path_data # r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign_all'
-json_name_regions_and_sign = 'changed_json.json'
+new_json_path = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\phase_1\dataset\dataset_8205_1\snipped_ohne_sign' #path_data # r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign_all'
+json_name_regions_and_sign = 'rgb_regions_train_val_test.json' #'regions_and_sign.json' #'changed_json.json'
 json_file_dir_region_and_sign = os.path.join(new_json_path, json_name_regions_and_sign) 
 
-#get all images in path_test_dir
+#get all images in path_test_dir oder new_json_path
 image_paths = []
 for filename in sorted(os.listdir(new_json_path), key=str.lower):
     if os.path.splitext(filename)[1].lower() in ['.png', '.jpg', '.jpeg']:
@@ -79,12 +80,13 @@ if True:
 #%%   ##############change region name to int in changed_json.json
         
 classes_soiltype = ["Mutterboden","Schluff","Klei","Torf","Sand","Feinsand","Mittelsand",
-                            "Plastik","Unbekannt","Darg","Mudde","Grobdsand","Wurzeln","Torf + Sand",
-                            "Braunkohle + Holz","Auffuellung"]
+                            "Plastik","Unbekannt","Darg","Mudde","Grobsand","Wurzeln","Torf + Sand",
+                            "Braunkohle + Holz","Auffuellung",'Grobschluff','Ton','Tonstein']
 
 
 #%%
-data_new2 = data_01               
+data_new2 = data_new #data_01   
+#%%            
 data_keys_json2 = list(data_new2.keys())
 
 for key in data_keys_json2:
@@ -94,7 +96,8 @@ for key in data_keys_json2:
             print(key)
         else:
             soiltype = regions_i['region_attributes']['soiltype']
-            
+#            if soiltype == 'Grobdsand':
+#                regions_i['region_attributes']['soiltype']= 'Grobsand'
             if soiltype in classes_soiltype :
                 index_class = classes_soiltype.index(soiltype)
                 regions_i['region_attributes']['soiltype']=index_class
@@ -103,14 +106,15 @@ for key in data_keys_json2:
                 print(soiltype)
                 print(key)
 #%%
-new_json_path_soiltype_id = path_data # r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign_all'
+new_json_path_soiltype_id = new_json_path #path_data # r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign_all'
 json_name_regions_and_sign_soiltype_id = 'changed_json_soiltype_id.json'
 json_file_dir_region_and_sign_soiltype_id = os.path.join(new_json_path_soiltype_id, json_name_regions_and_sign_soiltype_id) 
 # save annotation as json
 if True:
     with open(json_file_dir_region_and_sign_soiltype_id, 'w') as fp_new2:
         json.dump(data_new2, fp_new2) 
-      
+  
+    
         
         
  
@@ -124,7 +128,7 @@ if True:
        
 #%% ####change Auffüllung to Auffuellung in via_project_10Jul2020_12h16m_json(15).json and via_project_10Jul2020_12h16m_attributes(14).json
     
-classes_soiltype = "Auff\u00c3\u00bcllung"
+classes_soiltype = 'Pastik' #"Auff\u00c3\u00bcllung"
 #%%
 data_new2 = data_01               
 data_keys_json2 = list(data_new2.keys())
@@ -140,12 +144,12 @@ for key in data_keys_json2:
             
             if soiltype == classes_soiltype :
         
-                regions_i['region_attributes']['soiltype']='Auffuellung'
+                regions_i['region_attributes']['soiltype']= 'Plastik' #'Auffuellung'
 
 
 #%% save new json
 new_json_path_soiltype_id = path_data # r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\snipped_ohne_sign_all'
-json_name_regions_and_sign_soiltype_id = 'changed_json_Auffuellung.json'
+json_name_regions_and_sign_soiltype_id = 'changed_json_Plastik.json' #'changed_json_Auffuellung.json'
 json_file_dir_region_and_sign_soiltype_id = os.path.join(new_json_path_soiltype_id, json_name_regions_and_sign_soiltype_id) 
 # save annotation as json
 if True:
@@ -156,11 +160,29 @@ if True:
         
         
         
-  #%% counting soiltypes from json
+  #%% counting soiltypes from json: important for  inbalanced weights
+  
+#%%
 
+# Python program to read json file 
+# change here !!!!!!
+path_data = r'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\phase_2\project_9091\snipped_img\snipped_ohne_sign_all\RGB' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\phase_1\dataset\dataset_8205_1\snipped_ohne_sign' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\phase_2\snipped_img\snipped_ohne_sign_all\RGB' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\phase_2\snipped_img\snipped_sign' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\Soil_Classification\dataset_train_till_IMG_5203BKF 38_4\RGB' #'E:\Datasets_GGU_Bodenproben\Bodenproben_recognition\snipped_img\Soil_Classification\dataset_train_till_IMG_5203BKF 38_4'
+#json_name = 'via_project_10Jul2020_12h16m_json(15).json'  #'via_project_merged.json'
+json_name = 'changed_json_soiltype_id.json' #'via_project_5Aug2020_23h19m_json(3)_regions_and_sign.json' #'changed_json_Auffuellung.json' #'changed_json_soiltype_id.json' #'via_val02.json'
+json_file_dir = os.path.join(path_data, json_name)     
+     
+
+# Opening JSON file 
+f = open(json_file_dir) 
+# returns JSON object as a dictionary 
+data_01 = json.load(f) 
+# Closing file 
+f.close() 
+#%%
+#!!!!! Grobdsand
 classes_soiltype = ["Mutterboden","Schluff","Klei","Torf","Sand","Feinsand","Mittelsand",
-                            "Plastik","Unbekannt","Darg","Mudde","Grobdsand","Wurzeln","Torf + Sand",
-                            "Braunkohle + Holz","Auffuellung"]
+                            "Plastik","Unbekannt","Darg","Mudde","Grobsand","Wurzeln","Torf + Sand",
+                            "Braunkohle + Holz","Auffuellung",'Grobschluff','Ton','Tonstein']
 classes_soiltype_id = [*range(0,len(classes_soiltype),1)]
 
 
@@ -179,4 +201,17 @@ for key in data_keys_json3:
 
 soiltypes_train = np.vstack((classes_soiltype, count_soiltypes))
 
+#%% save to csv
+path_Soiltypes_csv = os.path.join(path_data,'Soiltypes_all.csv')
+with open(path_Soiltypes_csv, "w", newline="") as f_stypes: 
+    if True: #True False 
+        fieldnames=['id', 'Soiltype']
+        writer = csv.writer(f_stypes)
+        writer.writerow(fieldnames)
+        writer.writerows([soiltypes_train[0]])
+        writer.writerows([soiltypes_train[1]])
 
+
+        
+        
+        
